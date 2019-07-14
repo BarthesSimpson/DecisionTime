@@ -1,5 +1,6 @@
 .App {
   background-color: #ddd;
+  min-height: 100vh;
 }
 .App-header {
   background-color: #282c34;

@@ -1,9 +1,7 @@
-import { maxHeaderSize } from "http"
-
 const storageKey = "decisionTimeStorage"
 const emptyDB = "{}"
 
-type Decision = { [key: string]: any }
+export type Decision = { [key: string]: any }
 type DecisionDB = { [key: number]: Decision }
 
 export function saveDecision(id: number, document: object) {
@@ -22,9 +20,17 @@ export function loadDecision(id: number) {
 
 export function newDecision() {
   const currentDB = _getCurrentDB()
-  const ids = Object.keys(currentDB).map(parseInt)
-  const id = ids.length ? Math.max(...ids) + 1 : 1
+  const ids = Object.keys(currentDB).map(k => +k)
+  const id = ids.length ? Math.max(...ids) + 1 : 0
   return _newDecision(id)
+}
+
+export function previewAllDecisions(): Decision[] {
+  const currentDB = _getCurrentDB()
+  return Object.keys(currentDB).map(k => {
+    const { title } = currentDB[+k]
+    return { id: k, title }
+  })
 }
 
 function _getCurrentDB(): DecisionDB {
@@ -33,5 +39,5 @@ function _getCurrentDB(): DecisionDB {
 }
 
 function _newDecision(id: number): Decision {
-  return { id }
+  return { id, title: `Decision: ${id}` }
 }

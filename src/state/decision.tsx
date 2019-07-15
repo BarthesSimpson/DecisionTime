@@ -2,16 +2,16 @@ const storageKey = "decisionTimeStorage"
 const emptyDB = "{}"
 
 export type Decision = { [key: string]: any }
-type DecisionDB = { [key: number]: Decision }
+export type DecisionDB = { [key: number]: Decision }
 
 export function saveDecision(id: number, document: object) {
-  const currentDB = _getCurrentDB()
+  const currentDB = getCurrentDB()
   const updatedDocument = { ...currentDB, [id]: document }
   localStorage.setItem(storageKey, JSON.stringify(updatedDocument))
 }
 
 export function loadDecision(id: number): Decision {
-  const currentDB = _getCurrentDB()
+  const currentDB = getCurrentDB()
   if (!(id in currentDB)) {
     return newDecision
   }
@@ -23,22 +23,27 @@ export function newDecision() {
 }
 
 export function getHighestId(): number {
-  const currentDB = _getCurrentDB()
+  const currentDB = getCurrentDB()
   const ids = Object.keys(currentDB).map(k => +k)
   return ids.length ? Math.max(...ids) : -1
 }
 
 export function previewAllDecisions(): Decision[] {
-  const currentDB = _getCurrentDB()
+  const currentDB = getCurrentDB()
   return Object.keys(currentDB).map(k => {
     const { title } = currentDB[+k]
     return { id: k, title }
   })
 }
 
-function _getCurrentDB(): DecisionDB {
+export function getCurrentDB(): DecisionDB {
   const dbString = localStorage.getItem(storageKey) || emptyDB
   return JSON.parse(dbString)
+}
+
+export function setCurrentDB(db: DecisionDB) {
+  console.log("saving...")
+  localStorage.setItem(storageKey, JSON.stringify(db))
 }
 
 function _newDecision(id: number): Decision {

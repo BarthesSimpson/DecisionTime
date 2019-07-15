@@ -3,15 +3,17 @@ import state from "../state"
 
 export default function PastDecisions() {
   const {
-    state: { pastDecisions }
+    state: { allDecisions }
   } = useContext(state.AppContext)
 
   return (
     <>
       <h2>Decisions</h2>
-      {pastDecisions.map(({ id, title }) => (
-        <PastDecision key={id} title={title} />
-      ))}
+      {Object.values(allDecisions)
+        .sort(({ id }) => id)
+        .map(({ id, title }) => (
+          <PastDecision key={id} title={title} />
+        ))}
     </>
   )
 }

@@ -4,11 +4,13 @@ type LayoutState = {
   leftRailIsOpen: boolean
 }
 
+type LayoutActions = {
+  toggleLeftRail: () => void
+}
+
 type LayoutContextProps = {
   state: LayoutState
-  actions: {
-    toggleLeftRail: () => void
-  }
+  actions: LayoutActions
 }
 
 export const LayoutContext = createContext({} as LayoutContextProps)
@@ -31,5 +33,5 @@ export function LayoutProvider(props: { children: ReactNode }) {
 }
 
 function getInitialState(): LayoutState {
-  return { leftRailIsOpen: true }
+  return { leftRailIsOpen: false }
 }

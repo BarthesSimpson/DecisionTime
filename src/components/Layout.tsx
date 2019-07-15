@@ -34,14 +34,15 @@ export const AppHeader = styled.header`
  */
 export function LeftRail(props: { children: ReactNode }) {
   const {
-    state: { leftRailIsOpen }
+    state: { leftRailIsOpen },
+    actions: { toggleLeftRail }
   } = useContext(state.LayoutContext)
   return (
     <LeftRailContainer>
       <LeftRailContent collapsed={!leftRailIsOpen}>
         {props.children}
       </LeftRailContent>
-      <LeftRailToggle>
+      <LeftRailToggle onClick={toggleLeftRail}>
         <LeftRailToggleIcon>{leftRailIsOpen ? "<" : ">"}</LeftRailToggleIcon>
       </LeftRailToggle>
     </LeftRailContainer>
@@ -57,6 +58,7 @@ LeftRail.displayName = "LeftRail"
 
 type LeftRailContentProps = { collapsed: boolean }
 const LeftRailContent = styled.div`
+  overflow-x: hidden;
   width: ${(props: LeftRailContentProps) =>
     props.collapsed ? "0px" : "calc(100% - 1.5em)"};
   transition: width ${DEFAULT_ANIMATION_DURATION};
@@ -82,6 +84,6 @@ LeftRailToggleIcon.displayName = "LeftRailToggleIcon"
  * Main Panel
  */
 export const MainPanel = styled.article`
-  flex: 4;
+  flex: 5;
 `
 MainPanel.displayName = "MainPanel"

@@ -10,19 +10,22 @@ export function saveDecision(id: number, document: object) {
   localStorage.setItem(storageKey, JSON.stringify(updatedDocument))
 }
 
-export function loadDecision(id: number) {
+export function loadDecision(id: number): Decision {
   const currentDB = _getCurrentDB()
   if (!(id in currentDB)) {
-    throw new Error(`decision ${id} does not exist`)
+    return newDecision
   }
-  return currentDB[id] as object
+  return currentDB[id] as Decision
 }
 
 export function newDecision() {
+  return _newDecision(getHighestId() + 1)
+}
+
+export function getHighestId(): number {
   const currentDB = _getCurrentDB()
   const ids = Object.keys(currentDB).map(k => +k)
-  const id = ids.length ? Math.max(...ids) + 1 : 0
-  return _newDecision(id)
+  return ids.length ? Math.max(...ids) : -1
 }
 
 export function previewAllDecisions(): Decision[] {
@@ -39,5 +42,5 @@ function _getCurrentDB(): DecisionDB {
 }
 
 function _newDecision(id: number): Decision {
-  return { id, title: `Decision: ${id}` }
+  return { id, title: `Decision ${id}` }
 }

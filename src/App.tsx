@@ -1,8 +1,9 @@
 import React, { useEffect } from "react"
-import "./App.css"
 import PastDecisions from "./components/PastDecisions"
 import WorkPanel from "./components/WorkPanel"
 import { Decision, newDecision, saveDecision } from "./state/decision"
+import { State } from "./state"
+import { AppContainer, AppHeader, LeftRail, MainPanel } from "./components/Layout"
 
 function App() {
   useEffect(() => {
@@ -10,13 +11,17 @@ function App() {
     saveDecision(d.id, d)
   }, [])
   return (
-    <div className="App">
-      <header className="App-header">Decision Time</header>
-      <div style={{ display: "flex" }}>
-        <PastDecisions />
-        <WorkPanel />
-      </div>
-    </div>
+    <State>
+        <AppHeader>Decidedly</AppHeader>
+        <AppContainer>
+          <LeftRail>
+            <PastDecisions />
+          </LeftRail>
+          <MainPanel>
+            <WorkPanel />
+          </MainPanel>
+        </AppContainer>
+    </State>
   )
 }
 

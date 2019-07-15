@@ -1,17 +1,15 @@
-import React, { useState } from "react"
-import styled from "styled-components"
-import { previewAllDecisions } from "../state/decision"
+import React, { useContext } from "react"
+import state from "../state"
 
-const Container = styled.div`
-  flex: 1;
-`
+export default function PastDecisions() {
+  const {
+    state: { pastDecisions }
+  } = useContext(state.AppContext)
 
-function PastDecisions() {
-  const [decisions] = useState(previewAllDecisions)
   return (
     <>
-      <h2>Decisions</h2>,
-      {decisions.map(({ id, title }) => (
+      <h2>Decisions</h2>
+      {pastDecisions.map(({ id, title }) => (
         <PastDecision key={id} title={title} />
       ))}
     </>
@@ -22,9 +20,3 @@ type PastDecisionProps = { title: string }
 function PastDecision(props: PastDecisionProps) {
   return <div>{props.title}</div>
 }
-
-export default () => (
-  <Container>
-    <PastDecisions />
-  </Container>
-)

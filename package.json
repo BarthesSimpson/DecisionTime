@@ -33,6 +33,7 @@
   "devDependencies": {
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
-    "@types/styled-components": "^4.1.18"
+    "@types/styled-components": "^4.1.18",
+    "moment": "^2.24.0"
   }
 }

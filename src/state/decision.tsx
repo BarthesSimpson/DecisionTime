@@ -1,3 +1,4 @@
+import moment from "moment"
 const storageKey = "decisionTimeStorage"
 const emptyDB = "{}"
 
@@ -25,7 +26,7 @@ export function newDecision() {
 export function getHighestId(): number {
   const currentDB = getCurrentDB()
   const ids = Object.keys(currentDB).map(k => +k)
-  return ids.length ? Math.max(...ids) : -1
+  return ids.length ? Math.max(...ids) : 0
 }
 
 export function previewAllDecisions(): Decision[] {
@@ -43,9 +44,22 @@ export function getCurrentDB(): DecisionDB {
 
 export function setCurrentDB(db: DecisionDB) {
   console.log("saving...")
+  console.log({ db })
   localStorage.setItem(storageKey, JSON.stringify(db))
 }
 
 function _newDecision(id: number): Decision {
-  return { id, title: `Decision ${id}` }
+  return {
+    id,
+    title: `Decision ${id}`,
+    date: moment(),
+    context: "",
+    problemStatement: "",
+    factors: [],
+    alternatives: [],
+    rangeOfOutcomes: "",
+    expectedOutcomes: [],
+    reviewDate: moment().add(60, "days"),
+    reviewContent: ""
+  }
 }

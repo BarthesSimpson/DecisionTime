@@ -3,7 +3,8 @@ import state from "../state"
 
 export default function PastDecisions() {
   const {
-    state: { allDecisions }
+    state: { allDecisions },
+    actions: { setCurrentDecision }
   } = useContext(state.AppContext)
 
   return (
@@ -12,13 +13,17 @@ export default function PastDecisions() {
       {Object.values(allDecisions)
         .sort(({ id }) => id)
         .map(({ id, title }) => (
-          <PastDecision key={id} title={title} />
+          <PastDecision
+            key={id}
+            title={title}
+            onClick={() => setCurrentDecision(id)}
+          />
         ))}
     </>
   )
 }
 
-type PastDecisionProps = { title: string }
+type PastDecisionProps = { title: string; onClick: () => void }
 function PastDecision(props: PastDecisionProps) {
-  return <div>{props.title}</div>
+  return <div onClick={props.onClick}>{props.title}</div>
 }

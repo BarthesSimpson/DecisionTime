@@ -1,10 +1,17 @@
 import React, { useContext } from "react"
 import styled from "styled-components"
+import moment from "moment"
 import state from "../state/"
+import { Decision } from "../state/decision"
 
 import { BasicButton } from "./Controls"
 
 const WorkPanelHeader = styled.h2`
+  text-align: center;
+  padding-right: 20%;
+`
+WorkPanelHeader.displayName = "WorkPanelHeader"
+const WorkPanelDate = styled.h4`
   text-align: center;
   padding-right: 20%;
 `
@@ -23,14 +30,29 @@ function NewDecisionButton(props: { createNewDecision: () => void }) {
 
 export default function WorkPanel() {
   const {
-    state: { currentDecision },
+    state: { currentDecisionId, allDecisions },
     actions: { createNewDecision }
   } = useContext(state.AppContext)
+  const currentDecision = allDecisions[currentDecisionId]
   return (
     <>
       <NewDecisionButton createNewDecision={createNewDecision} />
+      {currentDecision && (
+        <WorkPanelContent currentDecision={currentDecision} />
+      )}
+    </>
+  )
+}
+
+type WorkPanelContentProps = { currentDecision: Decision }
+export function WorkPanelContent(props: WorkPanelContentProps) {
+  const { currentDecision } = props
+  return (
+    <>
       <WorkPanelHeader>{currentDecision.title}</WorkPanelHeader>
-      <div />
+      <WorkPanelDate>
+        {moment(currentDecision.date).format("dddd, MMMM Do YYYY")}
+      </WorkPanelDate>
     </>
   )
 }

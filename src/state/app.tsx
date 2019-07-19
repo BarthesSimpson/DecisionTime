@@ -1,8 +1,14 @@
-import React, { createContext, useState, ReactNode, useEffect } from "react"
+import React, {
+  createContext,
+  useCallback,
+  useState,
+  useEffect,
+  ReactNode
+} from "react"
 import {
   getHighestId,
   getCurrentDB,
-  setCurrentDB,
+  setCurrentDBDebounced,
   newDecision,
   DecisionDB
 } from "./decision"
@@ -15,6 +21,7 @@ type AppState = {
 type AppActions = {
   setCurrentDecision: (id: number) => void
   createNewDecision: () => void
+  updateDecision: (id: number, key: string, value: any) => void
 }
 
 type AppContextProps = {
@@ -32,12 +39,13 @@ function getInitialState(): AppState {
 }
 
 export const AppContext = createContext({} as AppContextProps)
-
+const AUTOSAVE_DEBOUNCE_DELAY = 1000
 type AutoSaveProps = { state: AppState }
 function AutoSave(props: AutoSaveProps) {
   const { allDecisions } = props.state
+  const save = useCallback(setCurrentDBDebounced(AUTOSAVE_DEBOUNCE_DELAY), [])
   useEffect(() => {
-    setCurrentDB(allDecisions)
+    save(allDecisions)
   }, [allDecisions]) //eslint-disable-line react-hooks/exhaustive-deps
   return null
 }
@@ -59,12 +67,21 @@ export function AppProvider(props: { children: ReactNode }) {
       currentDecisionId: decision.id
     }))
   }
+  function updateDecision(id: number, key: string, value: any) {
+    updateAppState(state => ({
+      ...state,
+      allDecisions: {
+        ...state.allDecisions,
+        [id]: { ...state.allDecisions[id], [key]: value }
+      }
+    }))
+  }
 
   return (
     <AppContext.Provider
       value={{
         state: appState,
-        actions: { setCurrentDecision, createNewDecision }
+        actions: { setCurrentDecision, createNewDecision, updateDecision }
       }}
     >
       <AutoSave state={appState} />

@@ -1,4 +1,5 @@
 import moment from "moment"
+import debounce from "debounce"
 const storageKey = "decisionTimeStorage"
 const emptyDB = "{}"
 
@@ -47,6 +48,9 @@ export function setCurrentDB(db: DecisionDB) {
   console.log({ db })
   localStorage.setItem(storageKey, JSON.stringify(db))
 }
+
+export const setCurrentDBDebounced = (delay: number) =>
+  debounce(setCurrentDB, delay)
 
 function _newDecision(id: number): Decision {
   return {

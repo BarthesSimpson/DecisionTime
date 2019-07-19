@@ -1,0 +1,2 @@
+- Dynamically resize the workspace when left drawer is opened/closed
+- Dynamically size magic textareas based on the length of their content

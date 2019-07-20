@@ -53,7 +53,6 @@ function AutoSave(props: AutoSaveProps) {
 export function AppProvider(props: { children: ReactNode }) {
   const [appState, updateAppState] = useState(getInitialState())
   function setCurrentDecision(id: number) {
-    // Make sure to save changes to the
     updateAppState(state => ({
       ...state,
       currentDecisionId: id

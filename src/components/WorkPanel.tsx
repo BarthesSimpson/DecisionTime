@@ -24,13 +24,12 @@ const WorkPanelDate = styled.h4`
 `
 WorkPanelHeader.displayName = "WorkPanelHeader"
 const WorkPanelTextArea = styled.textarea`
-  width: 100%;
+  width: 80%;
   background: #eee;
   font-size: 1.1em;
   height: auto;
   font-weight: 400;
   font-family: "Ubuntu", Helvetica, Arial, sans-serif;
-  width: 100%;
   border-radius: 3px;
   border: none;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
@@ -38,6 +37,17 @@ const WorkPanelTextArea = styled.textarea`
   transition: height 150ms ease;
 `
 WorkPanelTextArea.displayName = "WorkPanelTextArea"
+
+const StealthButton = styled.button`
+  display: block;
+  border: none;
+  box-shadow: none;
+  background: #ddd;
+  font-size: 1.1em;
+  width: 80%;
+  text-align: left;
+`
+StealthButton.displayName = "StealthButton"
 
 function NewDecisionButton(props: { createNewDecision: () => void }) {
   return (
@@ -124,7 +134,9 @@ function MagicTextArea(props: MagicTextAreaProps) {
       onChange={handleChange}
     />
   ) : (
-    <div onClick={makeEditable}>{content || "Click to edit"}</div>
+    <StealthButton onClick={makeEditable}>
+      {content || "Click to edit"}
+    </StealthButton>
   )
 }
 

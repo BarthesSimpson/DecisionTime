@@ -6,60 +6,26 @@ import React, {
   useState,
   MutableRefObject
 } from "react"
-import styled from "styled-components"
 import moment from "moment"
-import state from "../state/"
-import { Decision } from "../state/decision"
+import state from "../../state/"
+import { Decision } from "../../state/decision"
 
-import { BasicButton } from "./Controls"
+import { BasicButton } from "../Controls"
 
-const WorkPanelHeader = styled.h2`
-  text-align: center;
-  padding-right: 20%;
-`
-WorkPanelHeader.displayName = "WorkPanelHeader"
-const WorkPanelDate = styled.h4`
-  text-align: center;
-  padding-right: 20%;
-`
-WorkPanelHeader.displayName = "WorkPanelHeader"
-const WorkPanelTextArea = styled.textarea`
-  width: 80%;
-  background: #eee;
-  font-size: 1.1em;
-  height: auto;
-  font-weight: 400;
-  font-family: "Ubuntu", Helvetica, Arial, sans-serif;
-  border-radius: 3px;
-  border: none;
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
-  padding: 0.5em;
-  transition: height 150ms ease;
-`
-WorkPanelTextArea.displayName = "WorkPanelTextArea"
+import {
+  WorkPanelHeader,
+  WorkPanelDate,
+  WorkPanelTextArea,
+  StealthButton,
+  SectionBoundary,
+  SectionHeading,
+  SubHeading
+} from "./styles"
 
-const StealthButton = styled.button`
-  display: block;
-  border: none;
-  box-shadow: none;
-  background: #ddd;
-  font-size: 1.1em;
-  width: 80%;
-  text-align: left;
-`
-StealthButton.displayName = "StealthButton"
-
-function NewDecisionButton(props: { createNewDecision: () => void }) {
-  return (
-    <BasicButton
-      style={{ float: "right", margin: "1.5em 0.5em" }}
-      onClick={props.createNewDecision}
-    >
-      + New Decision
-    </BasicButton>
-  )
-}
-
+/**
+ * The main work area, which displays the currently loaded decision
+ * and a button for creating a new decision
+ */
 export default function WorkPanel() {
   const {
     state: { currentDecisionId, allDecisions },
@@ -79,25 +45,60 @@ export default function WorkPanel() {
   )
 }
 
+function NewDecisionButton(props: { createNewDecision: () => void }) {
+  return (
+    <BasicButton
+      style={{ float: "right", margin: "1.5em 0.5em" }}
+      onClick={props.createNewDecision}
+    >
+      + New Decision
+    </BasicButton>
+  )
+}
+
 type WorkPanelContentProps = {
   currentDecision: Decision
   updateDecision: (id: number, field: string, value: any) => void
 }
 export function WorkPanelContent(props: WorkPanelContentProps) {
   const { currentDecision, updateDecision } = props
-  const updateContext = useCallback(
-    (content: string) => updateDecision(currentDecision.id, "context", content),
-    [currentDecision.id, updateDecision]
-  )
+  function useUpdateTextField(field: string) {
+    return useCallback(
+      (content: string) => updateDecision(currentDecision.id, field, content),
+      [field]
+    )
+  }
+  const updateContext = useUpdateTextField("context")
+  const updateProblemStatement = useUpdateTextField("problemStatement")
+  const updateRangeOfOutcomes = useUpdateTextField("rangeOfOutcomes")
+  const updateReviewContent = useUpdateTextField("reviewContent")
+
   return (
     <>
       <WorkPanelHeader>{currentDecision.title}</WorkPanelHeader>
       <WorkPanelDate>
         {moment(currentDecision.date).format("dddd, MMMM Do YYYY")}
       </WorkPanelDate>
+      <SubHeading>Context</SubHeading>
       <MagicTextArea
         updateContent={updateContext}
         content={currentDecision.context}
+      />
+      <SubHeading>Problem Statement</SubHeading>
+      <MagicTextArea
+        updateContent={updateProblemStatement}
+        content={currentDecision.problemStatement}
+      />
+      <SubHeading>Range of Outcomes</SubHeading>
+      <MagicTextArea
+        updateContent={updateRangeOfOutcomes}
+        content={currentDecision.rangeOfOutcomes}
+      />
+      <SectionBoundary />
+      <SectionHeading>Review</SectionHeading>
+      <MagicTextArea
+        updateContent={updateReviewContent}
+        content={currentDecision.reviewContent}
       />
     </>
   )
@@ -135,7 +136,7 @@ function MagicTextArea(props: MagicTextAreaProps) {
     />
   ) : (
     <StealthButton onClick={makeEditable}>
-      {content || "Click to edit"}
+      {content.trim() ? content : "Click to edit"}
     </StealthButton>
   )
 }

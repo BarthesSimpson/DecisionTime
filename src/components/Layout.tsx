@@ -58,6 +58,7 @@ LeftRail.displayName = "LeftRail"
 
 type LeftRailContentProps = { collapsed: boolean }
 const LeftRailContent = styled.div`
+  background: #eee;
   overflow-x: hidden;
   width: ${(props: LeftRailContentProps) =>
     props.collapsed ? "0px" : "calc(100% - 1.5em)"};

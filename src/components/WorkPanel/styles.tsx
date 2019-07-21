@@ -1,15 +1,32 @@
 import styled from "styled-components"
 
+export const FullWidthListItem = styled.li`
+  display: block;
+  display: flex;
+`
+export const ListItemLabel = styled.span`
+  flex: 1;
+  font-weight: bold;
+`
+ListItemLabel.displayName = "ListItemLabel"
+
+export const ListItemText = styled.span`
+  flex: 5;
+`
+ListItemText.displayName = "ListItemText"
+
 export const WorkPanelHeader = styled.h2`
   text-align: center;
   padding-right: 20%;
 `
 WorkPanelHeader.displayName = "WorkPanelHeader"
+
 export const WorkPanelDate = styled.h4`
   text-align: center;
   padding-right: 20%;
 `
 WorkPanelHeader.displayName = "WorkPanelHeader"
+
 export const WorkPanelTextArea = styled.textarea`
   width: 80%;
   background: #eee;
@@ -38,7 +55,7 @@ StealthButton.displayName = "StealthButton"
 
 export const SectionHeading = styled.h2`
   text-align: center;
-  font-weight: strong;
+  padding-right: 20%;
 `
 SectionHeading.displayName = "SectionHeading"
 

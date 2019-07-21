@@ -1,22 +1,16 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-  MutableRefObject
-} from "react"
+import React, { useCallback, useContext } from "react"
 import moment from "moment"
 import state from "../../state/"
 import { Decision } from "../../state/decision"
-
+import MagicTextArea from "../magic/MagicTextArea"
+import MagicListWithLabels, {
+  ListItemWithLabel
+} from "../magic/MagicListWithLabels"
 import { BasicButton } from "../Controls"
 
 import {
   WorkPanelHeader,
   WorkPanelDate,
-  WorkPanelTextArea,
-  StealthButton,
   SectionBoundary,
   SectionHeading,
   SubHeading
@@ -72,6 +66,32 @@ export function WorkPanelContent(props: WorkPanelContentProps) {
   const updateProblemStatement = useUpdateTextField("problemStatement")
   const updateRangeOfOutcomes = useUpdateTextField("rangeOfOutcomes")
   const updateReviewContent = useUpdateTextField("reviewContent")
+  // TODO: improve these
+  const addExpectedOutcome = () => {
+    updateDecision(currentDecision.id, "expectedOutcomes", [
+      ...currentDecision.expectedOutcomes,
+      { label: "label", text: "text" }
+    ])
+  }
+  const updateExpectedOutcome = (idx: number, item: ListItemWithLabel) => {
+    updateDecision(
+      currentDecision.id,
+      "expectedOutcomes",
+      currentDecision.expectedOutcomes.map(
+        (unchanged: ListItemWithLabel, i: number) =>
+          i === idx ? item : unchanged
+      )
+    )
+  }
+  const deleteExpectedOutcome = (idx: number) => {
+    updateDecision(
+      currentDecision.id,
+      "expectedOutcomes",
+      currentDecision.expectedOutcomes.filter(
+        (_: ListItemWithLabel, i: number) => i !== idx
+      )
+    )
+  }
 
   return (
     <>
@@ -94,6 +114,13 @@ export function WorkPanelContent(props: WorkPanelContentProps) {
         updateContent={updateRangeOfOutcomes}
         content={currentDecision.rangeOfOutcomes}
       />
+      <SubHeading>Expected Outcomes</SubHeading>
+      <MagicListWithLabels
+        content={currentDecision.expectedOutcomes}
+        addItem={addExpectedOutcome}
+        deleteItem={deleteExpectedOutcome}
+        updateItem={updateExpectedOutcome}
+      />
       <SectionBoundary />
       <SectionHeading>Review</SectionHeading>
       <MagicTextArea
@@ -102,48 +129,4 @@ export function WorkPanelContent(props: WorkPanelContentProps) {
       />
     </>
   )
-}
-
-type MagicTextAreaProps = {
-  content: string
-  updateContent: (content: string) => void
-}
-function MagicTextArea(props: MagicTextAreaProps) {
-  const { content, updateContent } = props
-  const [isEditable, setIsEditable] = useState(false)
-  const toggleIsEditable = useCallback(
-    () => setIsEditable(isEditable => !isEditable),
-    []
-  )
-  const textArea = useRef(null)
-
-  const makeEditable = useCallback(() => {
-    setIsEditable(isEditable => !isEditable)
-    focusTextArea(textArea)
-  }, [])
-
-  const handleChange = useCallback(
-    (e: ChangeEvent<HTMLTextAreaElement>) => updateContent(e.target.value),
-    [updateContent]
-  )
-
-  return isEditable ? (
-    <WorkPanelTextArea
-      onBlur={toggleIsEditable}
-      ref={textArea}
-      value={content}
-      onChange={handleChange}
-    />
-  ) : (
-    <StealthButton onClick={makeEditable}>
-      {content.trim() ? content : "Click to edit"}
-    </StealthButton>
-  )
-}
-
-function focusTextArea(textArea: MutableRefObject<HTMLTextAreaElement | null>) {
-  setTimeout(() => {
-    if (textArea.current)
-      ((textArea.current as unknown) as HTMLTextAreaElement).focus()
-  }, 10)
 }

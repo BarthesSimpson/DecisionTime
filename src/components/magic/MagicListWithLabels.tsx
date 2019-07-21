@@ -1,10 +1,6 @@
 import React from "react"
-import {
-  FullWidthListItem,
-  ListItemLabel,
-  ListItemText
-} from "../WorkPanel/styles" //TODO: move these
-import { BasicButton } from "../Controls"
+import { FullWidthListItem, ListItemButtonContainer, ListItemLabel, ListItemText } from "./styles"
+import { BasicButton, IconButton } from "../Controls"
 import MagicTextArea from "./MagicTextArea"
 
 export type ListItemWithLabel = {
@@ -27,6 +23,7 @@ export default function MagicListWithLabels(props: MagicListWithLabelsProps) {
           updateItem={(item: ListItemWithLabel) => {
             props.updateItem(idx, item)
           }}
+          deleteItem={() => props.deleteItem(idx)}
           {...li}
         />
       ))}
@@ -39,9 +36,10 @@ export type ListRowProps = {
   label: string
   text: string
   updateItem: (item: ListItemWithLabel) => void
+  deleteItem: () => void
 }
 export function ListRow(props: ListRowProps) {
-  const { label, text, updateItem } = props
+  const { label, text, updateItem, deleteItem } = props
   return (
     <FullWidthListItem>
       <ListItemLabel>
@@ -60,6 +58,13 @@ export function ListRow(props: ListRowProps) {
           }}
         />
       </ListItemText>
+      <ListItemButtonContainer>
+      <DeleteButton onConfirm={deleteItem} />
+      </ListItemButtonContainer>
     </FullWidthListItem>
   )
+}
+
+function DeleteButton(props: { onConfirm: () => void }) {
+  return <IconButton>x</IconButton>
 }

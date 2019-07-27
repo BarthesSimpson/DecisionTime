@@ -1,7 +1,12 @@
 import React from "react"
-import { FullWidthListItem, ListItemButtonContainer, ListItemLabel, ListItemText } from "./styles"
+import {
+  FullWidthListItem,
+  ListItemButtonContainer,
+  ListItemLabel,
+  ListItemText
+} from "./styles"
 import { BasicButton, IconButton } from "../Controls"
-import MagicTextArea from "./MagicTextArea"
+import MagicText from "./MagicText"
 
 export type ListItemWithLabel = {
   label: string
@@ -43,7 +48,8 @@ export function ListRow(props: ListRowProps) {
   return (
     <FullWidthListItem>
       <ListItemLabel>
-        <MagicTextArea
+        <MagicText
+          useInput={true}
           content={label}
           updateContent={(content: string) => {
             updateItem({ label: content, text })
@@ -51,7 +57,8 @@ export function ListRow(props: ListRowProps) {
         />
       </ListItemLabel>
       <ListItemText>
-        <MagicTextArea
+        <MagicText
+          
           content={text}
           updateContent={(content: string) => {
             updateItem({ label, text: content })
@@ -59,7 +66,7 @@ export function ListRow(props: ListRowProps) {
         />
       </ListItemText>
       <ListItemButtonContainer>
-      <DeleteButton onConfirm={deleteItem} />
+        <DeleteButton onConfirm={deleteItem} />
       </ListItemButtonContainer>
     </FullWidthListItem>
   )

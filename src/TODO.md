@@ -1,4 +1,5 @@
 - Dynamically resize the workspace when left drawer is opened/closed
 - Dynamically size magic textareas based on the length of their content
-- Add a shift-click handler for editable fields to blur them
 - Add a help icon for each field to give instructions on how to use it
+- Make the delete buttons actually work
+- Make the left drawer usable

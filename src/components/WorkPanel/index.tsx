@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from "react"
 import moment from "moment"
 import state from "../../state/"
 import { Decision } from "../../state/decision"
-import MagicTextArea from "../magic/MagicTextArea"
+import MagicText from "../magic/MagicText"
 import MagicListWithLabels, {
   ListItemWithLabel
 } from "../magic/MagicListWithLabels"
@@ -100,17 +100,20 @@ export function WorkPanelContent(props: WorkPanelContentProps) {
         {moment(currentDecision.date).format("dddd, MMMM Do YYYY")}
       </WorkPanelDate>
       <SubHeading>Context</SubHeading>
-      <MagicTextArea
+      <MagicText
+        
         updateContent={updateContext}
         content={currentDecision.context}
       />
       <SubHeading>Problem Statement</SubHeading>
-      <MagicTextArea
+      <MagicText
+        
         updateContent={updateProblemStatement}
         content={currentDecision.problemStatement}
       />
       <SubHeading>Range of Outcomes</SubHeading>
-      <MagicTextArea
+      <MagicText
+        
         updateContent={updateRangeOfOutcomes}
         content={currentDecision.rangeOfOutcomes}
       />
@@ -123,7 +126,8 @@ export function WorkPanelContent(props: WorkPanelContentProps) {
       />
       <SectionBoundary />
       <SectionHeading>Review</SectionHeading>
-      <MagicTextArea
+      <MagicText
+        
         updateContent={updateReviewContent}
         content={currentDecision.reviewContent}
       />

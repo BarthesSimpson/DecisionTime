@@ -27,6 +27,21 @@ export const WorkPanelTextArea = styled.textarea`
 `
 WorkPanelTextArea.displayName = "WorkPanelTextArea"
 
+export const WorkPanelTextInput = styled.input`
+  width: 80%;
+  background: #eee;
+  font-size: 1.1em;
+  height: auto;
+  font-weight: 400;
+  font-family: "Ubuntu", Helvetica, Arial, sans-serif;
+  border-radius: 3px;
+  border: none;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.1);
+  padding: 0.5em;
+  transition: height 150ms ease;
+`
+WorkPanelTextInput.displayName = "WorkPanelTextInput"
+
 export const StealthButton = styled.button`
   display: block;
   border: none;
